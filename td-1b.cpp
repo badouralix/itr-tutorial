@@ -38,10 +38,10 @@ int main(int argc, char* argv[])
         exit( EXIT_FAILURE );
     }
 
-    accum = (stop.tv_sec - start.tv_sec) * 1e9 + (stop.tv_nsec - start.tv_nsec);
+    accum = (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec) * 1e-9;
 
     std::cout << "Counter value: " << counter << std::endl;
-    std::cout << "Timeit: " << accum << "ns" << std::endl;
+    std::cout << "Timeit: " << accum << "s" << std::endl;
 
     return EXIT_SUCCESS;
 }
