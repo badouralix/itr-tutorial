@@ -12,7 +12,7 @@ struct Param {
 void incr(unsigned int nLoops, double* pCounter)
 {
     for (unsigned int i = 0; i < nLoops; i++) {
-        (*pCounter)++;
+        *pCounter += 1.0;
     }
 }
 
