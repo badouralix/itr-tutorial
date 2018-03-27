@@ -23,8 +23,8 @@ void Thread::setSchedPolicy(int schedPolicy)
 
     // see http://www.yonch.com/tech/82-linux-thread-priority
     if (pthread_setschedparam(posixId, schedPolicy, NULL) != 0) {
-         std::cout << "Unsuccessful in setting thread realtime prio" << std::endl;
-         return;
+        perror("Thread setSchedPolicy");
+        return;
     }
 }
 
@@ -42,7 +42,11 @@ bool Thread::join(double timeout_ms)
 {
     struct timespec ts;
 
-    clock_gettime(CLOCK_REALTIME, &ts);
+    if (clock_gettime( CLOCK_REALTIME, &ts) == -1) {
+        perror( "clock gettime" );
+        exit( EXIT_FAILURE );
+    }
+
     ts.tv_nsec += (int) (timeout_ms * 1e6);
     ts.tv_sec += (int) (ts.tv_nsec * 1e-9);
     ts.tv_nsec %= (int) 1e9;
@@ -57,11 +61,9 @@ void Thread::sleep_ms(double delay_ms)
     remain.tv_sec = (int) (delay_ms * 1e-3);
     remain.tv_nsec = (int) (delay_ms * 1e6) % (int) 1e9;
 
-    while (remain.tv_sec > 0 || remain.tv_nsec > 0) {
+    while (nanosleep(&ts, &remain)) {
         ts.tv_sec = remain.tv_sec;
         ts.tv_nsec = remain.tv_nsec;
-
-        nanosleep(&ts, &remain);
     }
 
 }

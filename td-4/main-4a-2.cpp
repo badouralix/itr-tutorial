@@ -3,7 +3,7 @@
 #include <memory>
 #include <sstream>
 #include <vector>
-#include "td-4a-1.h"
+#include "td-4a-2.h"
 
 class IncrThread : public Thread
 {
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
     // Join threads
     for (auto it = threads.begin(); it != threads.end(); it++) {
-        (*it)->join();
+        (*it)->join(100);
     }
 
     if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
