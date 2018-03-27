@@ -47,7 +47,7 @@ bool Thread::join(double timeout_ms)
     ts.tv_sec += (int) (ts.tv_nsec * 1e-9);
     ts.tv_nsec %= (int) 1e9;
 
-    pthread_timedjoin_np(posixId, NULL, &ts);
+    return (bool) pthread_timedjoin_np(posixId, NULL, &ts);
 }
 
 void Thread::sleep_ms(double delay_ms)
